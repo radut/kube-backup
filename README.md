@@ -239,3 +239,9 @@ All configured resources will be exported into a directory tree structure in YAM
 
 -------
 This project is MIT licensed.
+
+
+### note 
+```bash
+GIT_REPO_PATH=~/git/hetzner-devops/kubernetes/kube-backup DRY_RUN=true ./entrypoint.sh
+```
