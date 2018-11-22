@@ -4,7 +4,7 @@ if [ -z "$NAMESPACES" ]; then
     NAMESPACES=$(kubectl get ns -o jsonpath={.items[*].metadata.name})
 fi
 
-RESOURCETYPES="${RESOURCETYPES:-"ingress deployment configmap svc rc ds networkpolicy statefulset cronjob pvc"}"
+RESOURCETYPES="${RESOURCETYPES:-"ingress deployment configmap svc rc ds networkpolicy statefulset cronjob pvc secret serviceaccount"}"
 GLOBALRESOURCES="${GLOBALRESOURCES:-"namespace storageclass clusterrole clusterrolebinding customresourcedefinition"}"
 
 # Initialize git repo
@@ -54,6 +54,7 @@ for resource in $GLOBALRESOURCES; do
         'del(
           .items[].metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",
           .items[].metadata.annotations."control-plane.alpha.kubernetes.io/leader",
+		  .items[].metadata.annotations."deployment.kubernetes.io/revision",
           .items[].metadata.uid,
           .items[].metadata.selfLink,
           .items[].metadata.resourceVersion,
@@ -85,6 +86,7 @@ for namespace in $NAMESPACES; do
         'del(
             .metadata.annotations."control-plane.alpha.kubernetes.io/leader",
             .metadata.annotations."kubectl.kubernetes.io/last-applied-configuration",
+			.metadata.annotations."deployment.kubernetes.io/revision",
             .metadata.creationTimestamp,
             .metadata.generation,
             .metadata.resourceVersion,
